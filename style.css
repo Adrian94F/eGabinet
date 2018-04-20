@@ -1,0 +1,65 @@
+body {
+	height: 100vh;
+	background-color: #fff; 
+	background-image: url("bgicon.png");
+	background-position: right bottom;
+	background-repeat: no-repeat;
+}
+
+.alert {
+	display: none; 
+	position: fixed; 
+	top: 90px;
+	left: 200px; 
+	width: calc(100vw - 400px); 
+	z-index:9999;
+	border-radius:0px;
+}
+
+.jumbotron {
+	margin: 0px;
+	padding: 15px;
+}
+
+.card {
+	background-color: #fff8
+}
+
+.logininput {
+	margin-bottom: 10px;
+}
+
+.card-body {
+	padding: 15px;
+	text-align: center;
+}
+
+#loader {
+	border: 16px solid #f3f3f3; /* Light grey */
+	border-top: 16px solid #007bff;
+	border-bottom: 16px solid #7db9ff;
+	border-radius: 50%;
+	margin: auto;
+	margin-top: 100px;
+	width: 120px;
+	height: 120px;
+	animation: spin 2s linear infinite;
+}
+
+#yourVideo {
+	width:200px;
+	float:left;
+}
+
+#friendsVideo {
+	display: none;
+    margin:0;
+	width: 100vw;
+	height: calc(100vh - 76px);
+	object-fit: fill;
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}

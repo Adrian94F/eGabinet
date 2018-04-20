@@ -1,0 +1,67 @@
+<meta charset="UTF-8">
+<html>
+	<head>
+		<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="style.css">
+		<title>eGabinet – wideorozmowa</title>
+		<link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
+	</head>
+	<body onload="showMyFace()">
+
+		<!-- <script src="door_opener.js"></script> -->
+
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="#">
+				<img src="favicon.png" width="50" height="50" alt="">
+			</a>
+			<a class="navbar-brand" href="#">
+				eGabinet
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Menu
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item" href="index.html">Menu główne</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="#">Wideorozmowa</a> 
+							<a class="dropdown-item" href="#">Harmonogram</a>
+							<a class="dropdown-item" href="#">Pacjenci</a>
+							<a class="dropdown-item" href="#">Rehabilitanci</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" onclick="logout()" href="#">Wyloguj</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+		<video id="friendsVideo" autoplay></video>
+		<div id="loader">
+			<img src="spin.png" style="width: 80px; height: 80px; margin-top: 4px; margin-left: 4px;">
+		</div>
+
+		<div class="card" style="position: fixed; top: 90px; right: 15px;">
+			<div class="card-body" style="padding: 0px;">
+				<video id="yourVideo" autoplay muted></video>
+			</div>
+			<div id="connect-footer" class="card-footer">
+				<button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="showFriendsFace(); getElementById('connect-footer').style.display = 'none';">Połącz</button>
+			</div>
+		</div>
+
+		<script src="main.js"></script>
+		
+	</body>
+</html>
+
