@@ -12,7 +12,7 @@
 	</head>
 	<body onload="showMyFace()">
 
-		<!-- <script src="door_opener.js"></script> -->
+		<script src="door_opener.js"></script>
 
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<a class="navbar-brand" href="#">
@@ -46,17 +46,28 @@
 			</div>
 		</nav>
 
-		<video id="friendsVideo" autoplay></video>
-		<div id="loader">
-			<img src="spin.png" style="width: 80px; height: 80px; margin-top: 4px; margin-left: 4px;">
-		</div>
-
-		<div class="card" style="position: fixed; top: 90px; right: 15px;">
-			<div class="card-body" style="padding: 0px;">
-				<video id="yourVideo" autoplay muted></video>
-			</div>
-			<div id="connect-footer" class="card-footer">
-				<button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="showFriendsFace(); getElementById('connect-footer').style.display = 'none';">Połącz</button>
+		<div class="container-fluid" style="margin-top: 15px;">
+			<div class="row">
+				<div class="col-sm-9" style="padding-right: 0px;">
+					<div class="card">
+						<div class="card-body">
+							<div id="loader">
+								<img src="spin.png" style="width: 80px; height: 80px; margin-top: 4px;">
+							</div>
+							<video id="friendsVideo" autoplay></video>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-3">
+					<div class="card">
+						<div class="card-body">
+							<video id="yourVideo" autoplay muted></video>
+						</div>
+						<div class="card-footer">
+							<button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="showFriendsFace()">Połącz</button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
