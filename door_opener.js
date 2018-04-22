@@ -54,6 +54,7 @@ function login() {
 	// get username and password
 	var user = document.loginform.username.value;
 	var pass = document.loginform.password.value;
+	var remember = document.loginform.rememberMe.checked;
 	var data = {"login": user, "password": pass};
 	var host = "https://e-gabinet.org.pl:8181";
 
@@ -70,8 +71,11 @@ function login() {
 		success: function (response) {
 			//console.log(response);
 			var credentials = response;
-			setCookie("accessToken", response["accessToken"], 1);
-			setCookie("refreshToken", response["refreshToken"], 1);
+			var hours = 1;
+			if (remember)
+				hours = 99999;
+			setCookie("accessToken", response["accessToken"], hours);
+			setCookie("refreshToken", response["refreshToken"], hours);
 			//alert(getCookie("accessToken") + ":" + getCookie("refreshToken"));
 			document.location.href = "index.html";
 		},
