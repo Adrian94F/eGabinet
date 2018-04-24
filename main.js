@@ -15,7 +15,9 @@ var database = firebase.database().ref();
 var yourVideo = document.getElementById("yourVideo");
 var friendsVideo = document.getElementById("friendsVideo");
 var yourId = Math.floor(Math.random()*1000000000);
-var servers = {'iceServers': [{'urls': 'turn:numb.viagenie.ca','credential': 'pwrwekaw4','username': '210047@student.pwr.edu.pl'}]};
+//var servers = {'iceServers': [{'urls': 'turn:numb.viagenie.ca','credential': 'pwrwekaw4','username': '210047@student.pwr.edu.pl'}]};
+var servers = {'iceServers': [{'urls': 'stun:e-gabinet.org.pl:5349','credential': 'motznehaslo','username': 'dave'}, {'urls': 'turn:e-gabinet.org.pl:5349','credential': 'motznehaslo','username': 'dave'}]};
+
 var pc = new RTCPeerConnection(servers);
 pc.onicecandidate = (event => event.candidate?sendMessage(yourId, JSON.stringify({'ice': event.candidate})):console.log("Sent All Ice") );
 pc.onaddstream = (event => friendsVideo.srcObject = event.stream);
