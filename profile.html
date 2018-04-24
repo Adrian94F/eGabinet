@@ -46,52 +46,37 @@
 			</div>
 		</nav>
 
-		<div class="container-fluid" style="margin-top: 15px;">
-			<div class="row">
-				<div class="col-sm">
-					<div class="jumbotron jumbotron-fluid">
-						<div class="container">
-							<h1 class="display-4">Wideorozmowa</h1>
-							<hr class="my-4">
-							<p class="lead">Wciśnij Start, by przejść do wideorozmowy.</p>
-							<p class="lead">
-								<a class="btn btn-primary btn-lg" href="video.html" role="button">Start</a>
-							</p>
-						</div>
+		<div class="card edit-user">
+			<div class="card-header">
+				<b>Profil użytkownika</b>
+			</div>
+			<div class="card-body">
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Imię</span>
 					</div>
+					<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" placeholder="" id="user-first-name" disabled>
 				</div>
-				<div class="col-sm" id="calendar">
-					<div class="jumbotron jumbotron-fluid">
-						<div class="container">
-							<h1 class="display-4">Harmonogram</h1>
-							<hr class="my-4">
-							<p class="lead" id="calendar-plan-text">Zarządzaj harmonogramem.</p>
-							<p class="lead" id="calendar-plan-button">
-								<a class="btn btn-primary btn-lg" href="schedule.html" role="button">Planuj</a>
-							</p>
-						</div>
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<span class="input-group-text">Nazwisko</span>
 					</div>
+					<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" placeholder="" id="user-second-name" disabled>
 				</div>
-				<div class="col-sm" id="users">
-					<div class="jumbotron jumbotron-fluid">
-						<div class="container">
-							<h1 class="display-4">Użytkownicy</h1>
-							<hr class="my-4">
-							<p class="lead">Zarządzaj użytkownikami.</p>
-							<p class="lead">
-								<a class="btn btn-primary btn-lg" href="users.html" role="button">Zarządzaj</a>
-							</p>
-						</div>
+				<div class="input-group mb-3" >
+					<div class="input-group-prepend">
+						<span class="input-group-text">Email</span>
 					</div>
+					<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" placeholder="" id="user-email" disabled>
+				</div>
+				<div class="input-group mb-3" >
+					<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" placeholder="Hasło" id="user-pass">
+					<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" placeholder="Powtórz hasło" id="user-pass-2">
 				</div>
 			</div>
+			<div class="card-footer" style="padding: 15px;">
+				<button type="button" class="btn btn-sm btn-outline-primary" onclick="closeEditWindow(true)">Zapisz</button>
+			</div>
 		</div>
-
-		<script>
-			//	if patient
-			//		remove #users
-			//		remove #calendar-plan-button
-			//		#calendar-plan-text = "planowana wizyta: ..."
-		</script>
 	</body>
 </html>
