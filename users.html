@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
+		<link rel="stylesheet" href="style.css">
+		<title>eGabinet - zarządzanie użytkownikami</title>
+	</head>
+	<body>
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/locale/bootstrap-table-pl-PL.min.js"></script>
+
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="#">
+				<img src="favicon.png" width="50" height="50" alt="">
+			</a>
+			<a class="navbar-brand" href="#">
+				eGabinet
+			</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Menu
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item" href="#">Menu główne</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="#">Wideorozmowa</a>
+							<a class="dropdown-item" href="#">Harmonogram</a>
+							<a class="dropdown-item" href="#">Pacjenci</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="#">Wyloguj</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+		<div class="container-fluid" style="margin-top: 15px; padding-bottom: 15px;">
+
+			<div id="edit-user" class="blank-div">
+				<div class="card edit-user">
+					<div class="card-header">
+						<b>Edycja użytkownika</b>
+					</div>
+					<div class="card-body">
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text">ID użytkownika</span>
+							</div>
+							<input type="text" class="form-control" aria-label="ID" aria-describedby="inputGroup-sizing-sm" disabled id="user-id">
+						</div>
+						<div class="input-group mb-3">
+							<input type="text" class="form-control" aria-label="Imię" aria-describedby="inputGroup-sizing-sm" placeholder="Imię" id="user-first-name">
+							<input type="text" class="form-control" aria-label="Nazwisko" aria-describedby="inputGroup-sizing-sm" placeholder="Nazwisko" id="user-second-name">
+						</div>
+						<div class="input-group mb-3" >
+							<input type="text" class="form-control" aria-label="Email" aria-describedby="inputGroup-sizing-sm" placeholder="Email" id="user-email">
+						</div>
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<label class="input-group-text" for="rola">Rola</label>
+							</div>
+							<select class="custom-select" name="rola" id="user-role">
+								<option value=0>Pacjent</option>
+								<option value=1>Rehabilitant</option>
+								<option value=2>Administrator</option>
+							</select>
+						</div>
+					</div>
+					<div class="card-footer" style="padding: 15px;">
+						<button type="button" class="btn btn-sm btn-outline-primary" onclick="closeEditWindow(true)">Zapisz</button>
+						<button type="button" class="btn btn-sm btn-outline-secondary" onclick="closeEditWindow(false)">Anuluj</button>
+						<button type="button" class="btn btn-sm btn-outline-warning" onclick="closeEditWindow(false)">Resetuj hasło</button>
+						<button type="button" class="btn btn-sm btn-outline-danger" onclick="removeUser(); closeEditWindow(false);">Usuń</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="card">
+				<div class="card-header">
+					<b>Lista użytkowników</b>
+				</div>
+				<div class="card-body" style="padding: 0px;">
+
+					<table id="table" class="table" style="margin: 0px;">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">Nazwisko</th>
+								<th scope="col">Imię</th>
+								<th scope="col">Email</th>
+								<th scope="col">Rola</th>
+								<th scope="col">Edycja</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">1</th>
+								<td>Kowalski</td>
+								<td>Sebastian</td>
+								<td>k.seba@ww.pl</td>
+								<td>Pacjent</td>
+								<td>
+									<button type="button" class="btn btn-sm btn-outline-primary" onclick="openEditWindow(this)">Edytuj</button>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">2</th>
+								<td>Nowak</td>
+								<td>Piotr</td>
+								<td>nowakpioter@lol.pl</td>
+								<td>Pacjent</td>
+								<td>
+									<button type="button" class="btn btn-sm btn-outline-primary" onclick="openEditWindow(this)">Edytuj</button>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">3</th>
+								<td>Tarnowski</td>
+								<td>Grzegorz</td>
+								<td>grzesiu.t@aaa.pl</td>
+								<td>Rehabilitant</td>
+								<td>
+									<button type="button" class="btn btn-sm btn-outline-primary" onclick="openEditWindow(this)">Edytuj</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="card-footer" style="padding: 15px;">
+					<button type="button" class="btn btn-sm btn-outline-primary" onclick="openEditWindow(false)">Dodaj użytkownika</button>
+				</div>
+			</div>
+
+
+
+			<script>
+				var user_roles = ["Pacjent", "Rehabilitant", "Administrator"];
+
+				function openEditWindow(button) {
+					if (button) {
+						// existing user
+						var row = button.parentNode.parentNode;
+						var id = row.cells[0].innerHTML;
+						var first_name = row.cells[2].innerHTML;
+						var second_name = row.cells[1].innerHTML;
+						var email = row.cells[3].innerHTML;
+						var role = row.cells[4].innerHTML;
+						$('#user-id').val(id);
+						$('#user-first-name').val(first_name);
+						$('#user-second-name').val(second_name);
+						$('#user-email').val(email);
+						/*r = 0;
+						if (role == "Rehabilitant")
+							r = 1;
+						else if (role == "Administator")
+							r = 2;*/
+						$('#user-role').val(user_roles.indexOf(role)).change();
+					}
+					else {
+						$('#user-id').val("");
+						$('#user-first-name').val("");
+						$('#user-second-name').val("");
+						$('#user-email').val("");
+						$('#user-role').val(0).change();
+					}
+					$('#edit-user').show();
+				}
+
+				function closeEditWindow(save) {
+					if (save) {
+						var id = $('#user-id').val();
+						var first_name = $('#user-first-name').val();
+						var second_name = $('#user-second-name').val();
+						var email = $('#user-email').val();
+						var role = $('#user-role').val();
+						var existing_user = false;
+
+						var table = document.getElementById('table');
+						for (var r = 0, n = table.rows.length; r < n; r++) {
+							var cells = table.rows[r].cells;
+							if (cells[0].innerHTML == id) {
+								existing_user = true;
+								cells[2].innerHTML = first_name;
+								cells[1].innerHTML = second_name;
+								cells[3].innerHTML = email;
+								cells[4].innerHTML = user_roles[role];
+							}
+						}
+						if (!existing_user) {
+							var row = table.insertRow(table.rows.length);
+							row.appendChild(document.createElement("th")).innerHTML = "newID";
+							row.insertCell(1).innerHTML = second_name;
+							row.insertCell(2).innerHTML = first_name;
+							row.insertCell(3).innerHTML = email;
+							row.insertCell(4).innerHTML = user_roles[role];
+							row.insertCell(5).innerHTML = '<button type="button" class="btn btn-sm btn-outline-primary" onclick="openEditWindow(this)">Edytuj</button>';
+						}
+					}
+					$('#edit-user').hide();
+				}
+
+				function removeUser () {
+					var id = $('#user-id').val();
+					var table = document.getElementById('table');
+						for (var r = 0, n = table.rows.length; r < n; r++) {
+							if (table.rows[r].cells[0].innerHTML == id) {
+								table.deleteRow(r);
+								break;
+							}
+						}
+				}
+			</script>
+
+			
+		</div>
+	</body>
+</html>
