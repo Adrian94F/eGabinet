@@ -18,9 +18,9 @@ body {
 }
 
 .edit-user {
-	width: 450px;
+	width: 500px;
 	position: fixed; 
-	top: calc(50vh - 180px);
+	top: calc(50vh - 250px);
 	left: calc(50vw - 225px);
 	z-index: 2;
 }
