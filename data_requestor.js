@@ -35,5 +35,22 @@ function getMe() {
 
 openTheDoor();
 
-if (document.location.pathname.substring(location.pathname.lastIndexOf("/") + 1) != "login.html")
-	getMe();
+function isCurrent(filename) {
+	if (document.location.pathname.substring(location.pathname.lastIndexOf("/") + 1) == filename)
+		return true
+	else
+		return false
+}
+
+var me = 0;
+
+if (!isCurrent("login.html"))
+	me = getMe();
+
+if (isCurrent("index.html") && me["role"] == 0) { // if patient on main menu
+	$( "#users-menu" ).remove();
+	$( "#scheduler-button" ).remove();
+	$( "#scheduler-text" ).html("Najbliższa wideorozmowa:</p><p>...");
+	//request
+	//update
+}
