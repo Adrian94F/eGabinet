@@ -45,15 +45,17 @@ function openTheDoor() {
 }
 
 var host = "https://e-gabinet.org.pl:8181";
-if (location.protocol != 'https:')
-	host = "http://e-gabinet.org.pl:8080";
+/*if (location.protocol != 'https:')
+	host = "http://e-gabinet.org.pl:8080";*/
 
-function request(_url, _data, _success, _error, auth) {
-	var _headers = 0;
-	if (auth) {
-		_headers = {"Authorization": getCookie("accessToken") + ":" + getCookie("refreshToken")};
-	}
-	console.log(_headers);
+function request(_url, _data, _success, _error) {
+	var acc = "";
+	var ref = "";
+	acc = getCookie("accessToken")
+	ref = getCookie("refreshToken")
+	var _headers = {"Authorization": acc + ":" + ref};
+
+	//console.log(_headers);
 	$.ajax({
 		url: _url,
 		type: "POST",
@@ -133,10 +135,8 @@ function getMe() {
 
 			document.getElementById('1st-2nd-name').innerHTML = response["name"] + " " + response["surname"];
 		},
-		function() {
-		},
-		true
-		);
+		function() {}
+	);
 	return me;
 }
 
