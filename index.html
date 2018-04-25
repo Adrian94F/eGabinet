@@ -14,7 +14,7 @@
 		</style>
 	</head>
 	<body>
-		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="jquery-3.2.1.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
@@ -48,43 +48,41 @@
 
 		<div class="container-fluid" style="margin-top: 15px;">
 			<div class="row">
-				<div class="col-sm">
-					<div class="jumbotron jumbotron-fluid">
-						<div class="container">
-							<h1 class="display-4">Wideorozmowa</h1>
-							<hr class="my-4">
-							<p class="lead">Wciśnij Start, by przejść do wideorozmowy.</p>
-							<p class="lead">
-								<a class="btn btn-primary btn-lg" href="video.html" role="button">Start</a>
-							</p>
+				<div class="col">
+					<div class="card">
+						<div class="card-header">
+							<b>Wideorozmowa</b>
+						</div>
+						<div class="card-body">
+							<p>Wciśnij Start, by przejść do wideorozmowy.</p>
+							<a class="btn btn-outline-primary btn-lg" href="video.html" role="button">Start</a>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm" id="calendar">
-					<div class="jumbotron jumbotron-fluid">
-						<div class="container">
-							<h1 class="display-4">Harmonogram</h1>
-							<hr class="my-4">
-							<p class="lead" id="calendar-plan-text">Zarządzaj harmonogramem.</p>
-							<p class="lead" id="calendar-plan-button">
-								<a class="btn btn-primary btn-lg" href="schedule.html" role="button">Planuj</a>
-							</p>
+				<div class="col" id="calendar">
+					<div class="card">
+						<div class="card-header">
+							<b>Harmonogram</b>
+						</div>
+						<div class="card-body">
+							<p id="calendar-plan-text">Zarządzaj harmonogramem.</p>
+							<a class="btn btn-outline-primary btn-lg" href="schedule.html" role="button">Planuj</a>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm" id="users">
-					<div class="jumbotron jumbotron-fluid">
-						<div class="container">
-							<h1 class="display-4">Użytkownicy</h1>
-							<hr class="my-4">
-							<p class="lead">Zarządzaj użytkownikami.</p>
-							<p class="lead">
-								<a class="btn btn-primary btn-lg" href="users.html" role="button">Zarządzaj</a>
-							</p>
+				<div class="col">
+					<div class="card">
+						<div class="card-header">
+							<b>Użytkownicy</b>
+						</div>
+						<div class="card-body">
+							<p>Zarządzaj użytkownikami.</p>
+							<a class="btn btn-outline-primary btn-lg" href="users.html" role="button">Zarządzaj</a>
 						</div>
 					</div>
 				</div>
 			</div>
+			
 		</div>
 
 		<script>

@@ -32,22 +32,38 @@ function openTheDoor() {
 	var acc = getCookie("accessToken");
 	var ref = getCookie("refreshToken");
 
-	//alert(acc + " " + ref);
-
-	if (acc != "" && ref != "")
-	{
-		if (document.location.pathname.substring(location.pathname.lastIndexOf("/") + 1) == "login.html" /*document.location.href == "login.html"*/)
-		{
+	if (acc != "" && ref != "")	{
+		if (document.location.pathname.substring(location.pathname.lastIndexOf("/") + 1) == "login.html") {
 			document.location.href = "index.html";
 		}
 	}
 	else
-		if (document.location.pathname.substring(location.pathname.lastIndexOf("/") + 1) != "login.html")
-		{
-			//alert("Zaloguj się!")
-			document.location.href = "login.html"
+		if (document.location.pathname.substring(location.pathname.lastIndexOf("/") + 1) != "login.html") {
+			document.location.href = "login.html";
 		}
 
+}
+
+var host = "https://e-gabinet.org.pl:8181";
+if (location.protocol != 'https:')
+	host = "http://e-gabinet.org.pl:8080";
+
+function request(_url, _data, _success, _error, auth) {
+	var _headers = 0;
+	if (auth) {
+		_headers = {"Authorization": getCookie("accessToken") + ":" + getCookie("refreshToken")};
+	}
+	console.log(_headers);
+	$.ajax({
+		url: _url,
+		type: "POST",
+		data: JSON.stringify(_data),
+		contentType: "application/json",
+		dataType: "json",
+		headers: _headers,
+		success: _success,
+		error: _error
+	});
 }
 
 function login() {
@@ -56,19 +72,10 @@ function login() {
 	var pass = document.loginform.password.value;
 	var remember = document.loginform.rememberMe.checked;
 	var data = {"login": user, "password": pass};
-	var host = "https://e-gabinet.org.pl:8181";
-
-	if (location.protocol != 'https:')
-		host = "http://e-gabinet.org.pl:8080";
-
-	// send request for token
-	$.ajax({
-		url: host + "/security/access",
-		type: "POST",
-		data: JSON.stringify(data),
-		contentType: "application/json",
-		dataType: "json",
-		success: function (response) {
+	
+	request(host + "/security/access",
+		data,
+		function (response) {
 			//console.log(response);
 			var credentials = response;
 			var hours = 1;
@@ -76,24 +83,28 @@ function login() {
 				hours = 99999;
 			setCookie("accessToken", response["accessToken"], hours);
 			setCookie("refreshToken", response["refreshToken"], hours);
-			//alert(getCookie("accessToken") + ":" + getCookie("refreshToken"));
+
+			getMe();
+
 			document.location.href = "index.html";
 		},
-		error: function() {
+		function() {
 			$('.alert').show();
-			//alert("Niepoprawne dane logowania");
 		}
-	})
+	);
 }
 
 function logout() {
+	var data = {"accessToken": getCookie("accessToken"), "refreshToken": getCookie("refreshToken")};
+	request(host + "/security/delete",
+		data,
+		function (response) {},
+		function() {}
+	);
 	setCookie("accessToken", "", 0);
 	setCookie("refreshToken", "", 0);
 	document.location.href = "login.html";
 }
-
-// Check tokens
-openTheDoor();
 
 // Detect pressed CapsLock il login view
 document.addEventListener('keydown', function(event) {
@@ -104,3 +115,32 @@ document.addEventListener('keydown', function(event) {
 	else
 		$('#caps-alert').hide();
 });
+
+function getMe() {
+	var me = 0;
+	var hours = 99999;
+	request(host + "/user/get/me",
+		{},
+		function(response) {
+			setCookie("id", response["id"], hours);
+			setCookie("email", response["email"], hours);
+			setCookie("name", response["name"], hours);
+			setCookie("surname", response["surname"], hours);
+			setCookie("doctorid", response["doctorid"], hours);
+			setCookie("patientid", response["patientid"], hours);
+			var role = Math.max.apply(null, response["roles"]);
+			setCookie("role", role, hours);
+
+			document.getElementById('1st-2nd-name').innerHTML = response["name"] + " " + response["surname"];
+		},
+		function() {
+		},
+		true
+		);
+	return me;
+}
+
+openTheDoor();
+
+if (document.location.pathname.substring(location.pathname.lastIndexOf("/") + 1) != "login.html")
+	getMe();
