@@ -28,7 +28,6 @@ function getCookie(cname) {
 }
 
 function openTheDoor() {
-
 	var acc = getCookie("accessToken");
 	var ref = getCookie("refreshToken");
 
@@ -41,30 +40,31 @@ function openTheDoor() {
 		if (document.location.pathname.substring(location.pathname.lastIndexOf("/") + 1) != "login.html") {
 			document.location.href = "login.html";
 		}
-
 }
 
 var host = "https://e-gabinet.org.pl:8181";
-/*if (location.protocol != 'https:')
-	host = "http://e-gabinet.org.pl:8080";*/
+if (location.protocol != 'https:')
+	host = "http://e-gabinet.org.pl:8080";
 
-function request(_url, _data, _success, _error) {
+function request(url, data, success, error, auth) {
 	var acc = "";
 	var ref = "";
 	acc = getCookie("accessToken")
 	ref = getCookie("refreshToken")
-	var _headers = {"Authorization": acc + ":" + ref};
-
-	//console.log(_headers);
+	var headers = 0;
+	if (auth) {
+		headers = {"Authorization": acc + ":" + ref};
+		console.log('with header Authorization: ' + acc + ':' + ref);
+	}
 	$.ajax({
-		url: _url,
+		url: url,
 		type: "POST",
-		data: JSON.stringify(_data),
+		data: JSON.stringify(data),
 		contentType: "application/json",
 		dataType: "json",
-		headers: _headers,
-		success: _success,
-		error: _error
+		headers: headers,
+		success: success,
+		error: error
 	});
 }
 
@@ -85,8 +85,6 @@ function login() {
 				hours = 99999;
 			setCookie("accessToken", response["accessToken"], hours);
 			setCookie("refreshToken", response["refreshToken"], hours);
-
-			getMe();
 
 			document.location.href = "index.html";
 		},
@@ -109,38 +107,13 @@ function logout() {
 }
 
 // Detect pressed CapsLock il login view
-document.addEventListener('keydown', function(event) {
-	var caps = event.getModifierState && event.getModifierState('CapsLock');
-	//console.log(caps);
-	if (document.location.pathname.substring(location.pathname.lastIndexOf("/") + 1) == "login.html" && caps)
-		$('#caps-alert').show();
-	else
-		$('#caps-alert').hide();
-});
-
-function getMe() {
-	var me = 0;
-	var hours = 99999;
-	request(host + "/user/get/me",
-		{},
-		function(response) {
-			setCookie("id", response["id"], hours);
-			setCookie("email", response["email"], hours);
-			setCookie("name", response["name"], hours);
-			setCookie("surname", response["surname"], hours);
-			setCookie("doctorid", response["doctorid"], hours);
-			setCookie("patientid", response["patientid"], hours);
-			var role = Math.max.apply(null, response["roles"]);
-			setCookie("role", role, hours);
-
-			document.getElementById('1st-2nd-name').innerHTML = response["name"] + " " + response["surname"];
-		},
-		function() {}
-	);
-	return me;
+if (document.location.pathname.substring(location.pathname.lastIndexOf("/") + 1) == "login.html") {
+	document.addEventListener('keydown', function(event) {
+		var caps = event.getModifierState && event.getModifierState('CapsLock');
+		//console.log(caps);
+		if (caps)
+			$('#caps-alert').show();
+		else
+			$('#caps-alert').hide();
+	});
 }
-
-openTheDoor();
-
-if (document.location.pathname.substring(location.pathname.lastIndexOf("/") + 1) != "login.html")
-	getMe();
