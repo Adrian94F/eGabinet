@@ -265,9 +265,40 @@ function removeUser () {
 }
 
 
+function refreshAppointmentsTable() {
+	// get all appointments, refresh table
+}
+
 if (isCurrent("schedule.html"))
 	if (getCookie("role") == 0)
 		document.location.href = "index.html";
+	else {
+		// get rehabs & patients, fill selectors
+		request(host + "/user/get/lists",
+			0,
+			function(response) {
+				console.log("got users");
+				users = response;
+				var select = document.getElementById("videocall-rehab");
+				for (r in users["rehabs"]) {
+					var option = document.createElement("option");
+					option.text = users["rehabs"][r]["name"] + " " + users["rehabs"][r]["surname"];
+					option.value = users["rehabs"][r]["doctorId"];
+					select.add(option);
+				}
+				select = document.getElementById("videocall-patient");
+				for (p in users["patients"]) {
+					var option = document.createElement("option");
+					option.text = users["patients"][p]["name"] + " " + users["patients"][p]["surname"];
+					option.value = users["patients"][p]["patientId"];
+					select.add(option);
+				}
+				refreshAppointmentsTable();
+			},
+			function() {},
+			true
+		);
+	}
 
 function openVideoEditWindow(button) {
 	if (button) {
@@ -326,11 +357,6 @@ function closeVideoEditWindow(save) {
 
 function removeVideocall () {
 	var id = $('#videocall-id').val();
-	var table = document.getElementById('table');
-		for (var r = 0, n = table.rows.length; r < n; r++) {
-			if (table.rows[r].cells[0].innerHTML == id) {
-				table.deleteRow(r);
-				break;
-			}
-		}
+	// ...
+	refreshAppointmentsTable();
 }
