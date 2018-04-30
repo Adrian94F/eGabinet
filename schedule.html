@@ -80,38 +80,30 @@
 						</div>
 						<div class="input-group mb-3">
 							<div class="input-group-prepend">
-								<label class="input-group-text" for="rola">Rehabilitant</label>
+								<label class="input-group-text" for="rehab">Rehabilitant</label>
 							</div>
-							<select class="custom-select" name="rola" id="videocall-rehab">
+							<select class="custom-select" name="rehab" id="videocall-rehab">
+								<option>wybierz rehabilitanta...</option>
 								<option value=0>Grzegorz Tarnowski</option>
 							</select>
 						</div>
-						<div class="input-group mb-3">
+						<div class="input-group">
 							<div class="input-group-prepend">
-								<label class="input-group-text" for="rola">Pacjenci<br/>(przytrzymaj CTRL,<br/>aby zaznaczyć kilku)</label>
+								<label class="input-group-text" for="patient">Pacjent</label>
 							</div>
-							<select multiple class="form-control">
-								<option value="1">Sebastian Kowalski</option>
-								<option value="2">Piotr Nowak</option>
-								<option value="1">Sebastian Kowalski</option>
-								<option value="2">Piotr Nowak</option>
-								<option value="1">Sebastian Kowalski</option>
-								<option value="2">Piotr Nowak</option>
-								<option value="1">Sebastian Kowalski</option>
-								<option value="2">Piotr Nowak</option>
-								<option value="1">Sebastian Kowalski</option>
-								<option value="2">Piotr Nowak</option>
-								<option value="1">Sebastian Kowalski</option>
-								<option value="2">Piotr Nowak</option>
-								<option value="1">Sebastian Kowalski</option>
-								<option value="2">Piotr Nowak</option>
+							<select class="custom-select" name="patient" id="videocall-patient">
+								<option>wybierz pacjenta...</option>
+								<option value=1>Sebastian Kowalski</option>
+								<option value=2>Piotr Nowak</option>
+								<option value=3>Sebastian Kowalski</option>
+								<option value=4>Piotr Nowak</option>
 							</select>
 						</div>
 					</div>
 					<div class="card-footer" style="padding: 15px;">
-						<button type="button" class="btn btn-sm btn-outline-primary" onclick="closeEditWindow(true)">Zapisz</button>
-						<button type="button" class="btn btn-sm btn-outline-secondary" onclick="closeEditWindow(false)">Anuluj</button>
-						<button type="button" class="btn btn-sm btn-outline-danger" onclick="removeVideocall(); closeEditWindow(false);">Usuń</button>
+						<button type="button" class="btn btn-sm btn-outline-primary" onclick="closeVideoEditWindow(true)">Zapisz</button>
+						<button type="button" class="btn btn-sm btn-outline-secondary" onclick="closeVideoEditWindow(false)">Anuluj</button>
+						<button type="button" class="btn btn-sm btn-outline-danger" onclick="removeVideocall(); closeVideoEditWindow(false);">Usuń</button>
 					</div>
 				</div>
 			</div>
@@ -141,7 +133,7 @@
 								<td>10:30</td>
 								<td>Grzegorz Tarnowski</td>
 								<td>
-									<button type="button" class="btn btn-sm btn-outline-primary" onclick="openEditWindow(this)">Edytuj</button>
+									<button type="button" class="btn btn-sm btn-outline-primary" onclick="openVideoEditWindow(this)">Edytuj</button>
 								</td>
 							</tr>
 							<tr>
@@ -151,7 +143,7 @@
 								<td>11:00</td>
 								<td>Grzegorz Tarnowski</td>
 								<td>
-									<button type="button" class="btn btn-sm btn-outline-primary" onclick="openEditWindow(this)">Edytuj</button>
+									<button type="button" class="btn btn-sm btn-outline-primary" onclick="openVideoEditWindow(this)">Edytuj</button>
 								</td>
 							</tr>
 							<tr>
@@ -161,7 +153,7 @@
 								<td>11:30</td>
 								<td>Grzegorz Tarnowski</td>
 								<td>
-									<button type="button" class="btn btn-sm btn-outline-primary" onclick="openEditWindow(this)">Edytuj</button>
+									<button type="button" class="btn btn-sm btn-outline-primary" onclick="openVideoEditWindow(this)">Edytuj</button>
 								</td>
 							</tr>
 							<tr>
@@ -171,7 +163,7 @@
 								<td>12:00</td>
 								<td>Grzegorz Tarnowski</td>
 								<td>
-									<button type="button" class="btn btn-sm btn-outline-primary" onclick="openEditWindow(this)">Edytuj</button>
+									<button type="button" class="btn btn-sm btn-outline-primary" onclick="openVideoEditWindow(this)">Edytuj</button>
 								</td>
 							</tr>
 						</tbody>
@@ -179,85 +171,9 @@
 				</div>
 
 				<div class="card-footer" style="padding: 15px;">
-					<button type="button" class="btn btn-sm btn-outline-primary" onclick="openEditWindow(false)">Dodaj wizytę</button>
+					<button type="button" class="btn btn-sm btn-outline-primary" onclick="openVideoEditWindow(false)">Dodaj wizytę</button>
 				</div>
 			</div>
-
-
-
-			<script>
-				//	get user role from cookie
-
-				//	if patient
-				//		document.location.href = "index.html";
-
-				function openEditWindow(button) {
-					if (button) {
-						// existing user
-						var row = button.parentNode.parentNode;
-						var id = row.cells[0].innerHTML;
-						var date = row.cells[1].innerHTML;
-						var start = row.cells[2].innerHTML;
-						var stop = row.cells[3].innerHTML;
-						//rehab
-						$('#videocall-id').val(id);
-						$('#videocall-date').val(date);
-						$('#videocall-start').val(start);
-						$('#videocall-stop').val(stop);
-					}
-					else {
-						$('#videocall-id').val("");
-						$('#videocall-date').val("");
-						$('#videocall-start').val("");
-						$('#videocall-stop').val("");
-					}
-					$('#edit-videocall').show();
-				}
-
-				function closeEditWindow(save) {
-					if (save) {
-						var id = $('#videocall-id').val();
-						var date = $('#videocall-date').val();
-						var start = $('#videocall-start').val();
-						var stop = $('#videocall-stop').val();
-						//rehab
-						var existing_visit = false;
-
-						var table = document.getElementById('table');
-						for (var r = 0, n = table.rows.length; r < n; r++) {
-							var cells = table.rows[r].cells;
-							if (cells[0].innerHTML == id) {
-								existing_visit = true;
-								cells[1].innerHTML = date;
-								cells[2].innerHTML = start;
-								cells[3].innerHTML = stop;
-							}
-						}
-						if (!existing_visit) {
-							var row = table.insertRow(table.rows.length);
-							row.appendChild(document.createElement("th")).innerHTML = "newID";
-							row.insertCell(1).innerHTML = date;
-							row.insertCell(2).innerHTML = start;
-							row.insertCell(3).innerHTML = stop;
-							row.insertCell(4).innerHTML = "////rehab...";
-							row.insertCell(5).innerHTML = '<button type="button" class="btn btn-sm btn-outline-primary" onclick="openEditWindow(this)">Edytuj</button>';
-						}
-					}
-					$('#edit-videocall').hide();
-				}
-
-				function removeVideocall () {
-					var id = $('#videocall-id').val();
-					var table = document.getElementById('table');
-						for (var r = 0, n = table.rows.length; r < n; r++) {
-							if (table.rows[r].cells[0].innerHTML == id) {
-								table.deleteRow(r);
-								break;
-							}
-						}
-				}
-			</script>
-
 			
 		</div>
 

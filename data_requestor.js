@@ -147,6 +147,8 @@ function openEditWindow(button) {
 		$('#user-email').val("");
 		$('#user-role').val(0).change();
 	}
+	$('#user-pass').val("");
+	$('#user-pass-2').val("");
 	$('#edit-user').show();
 }
 
@@ -260,4 +262,75 @@ function removeUser () {
 			true
 		);
 	}
+}
+
+
+if (isCurrent("schedule.html"))
+	if (getCookie("role") == 0)
+		document.location.href = "index.html";
+
+function openVideoEditWindow(button) {
+	if (button) {
+		// existing user
+		var row = button.parentNode.parentNode;
+		var id = row.cells[0].innerHTML;
+		var date = row.cells[1].innerHTML;
+		var start = row.cells[2].innerHTML;
+		var stop = row.cells[3].innerHTML;
+		//rehab
+		$('#videocall-id').val(id);
+		$('#videocall-date').val(date);
+		$('#videocall-start').val(start);
+		$('#videocall-stop').val(stop);
+	}
+	else {
+		$('#videocall-id').val("");
+		$('#videocall-date').val("");
+		$('#videocall-start').val("");
+		$('#videocall-stop').val("");
+	}
+	$('#edit-videocall').show();
+}
+
+function closeVideoEditWindow(save) {
+	if (save) {
+		var id = $('#videocall-id').val();
+		var date = $('#videocall-date').val();
+		var start = $('#videocall-start').val();
+		var stop = $('#videocall-stop').val();
+		//rehab
+		var existing_visit = false;
+
+		var table = document.getElementById('table');
+		for (var r = 0, n = table.rows.length; r < n; r++) {
+			var cells = table.rows[r].cells;
+			if (cells[0].innerHTML == id) {
+				existing_visit = true;
+				cells[1].innerHTML = date;
+				cells[2].innerHTML = start;
+				cells[3].innerHTML = stop;
+			}
+		}
+		if (!existing_visit) {
+			var row = table.insertRow(table.rows.length);
+			row.appendChild(document.createElement("th")).innerHTML = "newID";
+			row.insertCell(1).innerHTML = date;
+			row.insertCell(2).innerHTML = start;
+			row.insertCell(3).innerHTML = stop;
+			row.insertCell(4).innerHTML = "////rehab...";
+			row.insertCell(5).innerHTML = '<button type="button" class="btn btn-sm btn-outline-primary" onclick="openVideoEditWindow(this)">Edytuj</button>';
+		}
+	}
+	$('#edit-videocall').hide();
+}
+
+function removeVideocall () {
+	var id = $('#videocall-id').val();
+	var table = document.getElementById('table');
+		for (var r = 0, n = table.rows.length; r < n; r++) {
+			if (table.rows[r].cells[0].innerHTML == id) {
+				table.deleteRow(r);
+				break;
+			}
+		}
 }
