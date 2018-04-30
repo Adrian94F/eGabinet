@@ -46,7 +46,7 @@ var host = "https://e-gabinet.org.pl:8181";
 if (location.protocol != 'https:')
 	host = "http://e-gabinet.org.pl:8080";
 
-function request(url, data, success, error, auth) {
+function request(url, data, success, error, auth, plain) {
 	var acc = "";
 	var ref = "";
 	acc = getCookie("accessToken")
@@ -56,10 +56,12 @@ function request(url, data, success, error, auth) {
 		headers = {"Authorization": acc + ":" + ref};
 		console.log('with header Authorization: ' + acc + ':' + ref);
 	}
+	if (!plain)
+		data = JSON.stringify(data);
 	$.ajax({
 		url: url,
 		type: "POST",
-		data: JSON.stringify(data),
+		data: data,
 		contentType: "application/json",
 		dataType: "json",
 		headers: headers,
@@ -117,3 +119,5 @@ if (document.location.pathname.substring(location.pathname.lastIndexOf("/") + 1)
 			$('#caps-alert').hide();
 	});
 }
+
+openTheDoor();

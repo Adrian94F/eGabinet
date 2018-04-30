@@ -50,6 +50,13 @@
 			</button>
 		</nav>
 
+		<div id="alert" class="alert alert-danger alert-dismissible fade show" role="alert" >
+			<strong>Błąd!</strong> Hasła nie są takie same.
+			<a class="close" onclick="$('.alert').hide()">
+				<span aria-hidden="true">&times;</span>
+			</a>
+		</div>
+
 		<div class="card edit-user">
 			<div class="card-header">
 				<b>Profil użytkownika</b>
@@ -59,13 +66,13 @@
 					<div class="input-group-prepend">
 						<span class="input-group-text">Imię</span>
 					</div>
-					<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" placeholder="" id="user-first-name" disabled>
+					<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" placeholder="" id="user-name" disabled>
 				</div>
 				<div class="input-group mb-3">
 					<div class="input-group-prepend">
 						<span class="input-group-text">Nazwisko</span>
 					</div>
-					<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" placeholder="" id="user-second-name" disabled>
+					<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" placeholder="" id="user-surname" disabled>
 				</div>
 				<div class="input-group mb-3" >
 					<div class="input-group-prepend">
@@ -73,13 +80,13 @@
 					</div>
 					<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" placeholder="" id="user-email" disabled>
 				</div>
-				<div class="input-group mb-3" >
-					<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" placeholder="Hasło" id="user-pass">
-					<input type="text" class="form-control" aria-describedby="inputGroup-sizing-sm" placeholder="Powtórz hasło" id="user-pass-2">
+				<div class="input-group" >
+					<input type="password" class="form-control" aria-describedby="inputGroup-sizing-sm" placeholder="Hasło" id="user-pass">
+					<input type="password" class="form-control" aria-describedby="inputGroup-sizing-sm" placeholder="Powtórz hasło" id="user-pass-2">
 				</div>
 			</div>
 			<div class="card-footer" style="padding: 15px;">
-				<button type="button" class="btn btn-sm btn-outline-primary" onclick="closeEditWindow(true)">Zapisz</button>
+				<button type="button" class="btn btn-sm btn-outline-primary" onclick="newPassword()">Zapisz nowe hasło</button>
 			</div>
 		</div>
 

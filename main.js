@@ -52,7 +52,7 @@ function showMyFace() {
 }
 
 function showFriendsFace() {
-  document.getElementById("loader").style.display = "none";
+  document.getElementById("connect-btn").style.display = "none";
   friendsVideo.style.display = "block";
   pc.createOffer()
     .then(offer => pc.setLocalDescription(offer) )
