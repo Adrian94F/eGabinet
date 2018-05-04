@@ -180,6 +180,7 @@ function openEditWindow(button) {
 }
 
 function closeEditWindow(save) {
+	// TODO: zmiana roli!!!
 	if (save) {
 		var id = $('#user-id').val();
 		var name = $('#user-first-name').val();
@@ -206,22 +207,27 @@ function closeEditWindow(save) {
 				console.log(response);
 				if (id == 0 && role != 2) {
 					id = response["addedUserId"];
-					if (role == 0)
-						addr = "/doctor/patient/add";
-					else if (role == 1)
-						addr = "/admin/doctor/add";
-					request(host + addr,
-						{
-							"userId": id
-						},
-						function() {
-							refreshUsersTable();
-						},
-						function() {},
-						true
-					);
+					if (id == 0) {
+						if (role == 0)
+							addr = "/doctor/patient/add";
+						else if (role == 1)
+							addr = "/admin/doctor/add";
+						request(host + addr,
+							{
+								"userId": id
+							},
+							function() {
+								refreshUsersTable();
+							},
+							function() {},
+							true
+						);
+					} else {
+						refreshUsersTable();
+					}
+				} else {
+					refreshUsersTable();
 				}
-				refreshUsersTable();
 			},
 			function() {},
 			true
