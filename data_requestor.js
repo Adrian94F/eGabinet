@@ -29,7 +29,9 @@ function getMe() {
 				setCookie("surname", response["surname"], hours);
 			}
 		},
-		function() {},
+		function() {
+			logout();
+		},
 		true
 	);
 }
@@ -43,9 +45,30 @@ function isCurrent(filename) {
 
 var me = 0;
 
-if (!isCurrent("login.html")) // always instead of login page
-	getMe();
 
+/*
+LOGIN
+*/
+if (!isCurrent("login.html")) { // always instead of login page
+	getMe();
+	setInterval(function() { // refresh tokens every minute
+		data = {"accessToken": getCookie("accessToken"), "refreshToken": getCookie("refreshToken")};
+		request(host + "/security/refresh",
+			data,
+			function (response) {
+				setCookie("accessToken", response["accessToken"], 9999);
+				setCookie("refreshToken", response["refreshToken"], 9999);
+			},
+			function() {},
+			true
+		);
+	}, 60000);
+}
+
+
+/*
+INDEX
+*/
 if (isCurrent("index.html") && getCookie("role") == 0) { // if patient on main menu
 	$("#users-menu").remove();
 	$("#scheduler-button").remove();
@@ -54,6 +77,10 @@ if (isCurrent("index.html") && getCookie("role") == 0) { // if patient on main m
 	//update
 }
 
+
+/*
+PROFILE
+*/
 if (isCurrent("profile.html")) { // profile view
 	$("#user-name").val(getCookie("name"));
 	$("#user-surname").val(getCookie("surname"));
@@ -172,13 +199,12 @@ function closeEditWindow(save) {
 				"name": name,
 				"password": password,
 				"surname": surname,
-				"userId": id/*,
-				"admin": (role == 2 ? true : false)*/
+				"userId": id,
+				"admin": (role == 2 ? true : false)
 			},
 			function(response) {
 				console.log(response);
 				if (id == 0 && role != 2) {
-					// add user to list of admins/doctors/rehabs
 					id = response["addedUserId"];
 					if (role == 0)
 						addr = "/doctor/patient/add";
@@ -212,12 +238,12 @@ function closeEditWindow(save) {
 function adminUserDelete(id) {
 	addr = "/admin/user/delete";
 	request(host + addr,
-		id,
+		parseInt(id),
 		function() {
 			console.log(id + " przepadł w odbyt... znaczy niebyt.");
+			refreshUsersTable();
 		},
 		function() {},
-		true,
 		true
 	);
 }
@@ -227,46 +253,80 @@ function removeUser () {
 	//return;
 	var id = $('#user-id').val();
 	var role = $('#user-role').val();
-	var addr = "/admin/doctor/delete";
+	var addr;
 	var subID;
 	if (role == 2) {
 		for (u in users["admins"])
-			if (id = users["admins"][u]["id"]) {
+			if (id == users["admins"][u]["id"]) {
 				adminUserDelete(id);
 				return;
 			}
 	} else {
-		if (role == 1)
+		if (role == 1) {
+			addr = "/admin/doctor/delete"
 			for (u in users["rehabs"])
-				if (id = users["rehabs"][u]["id"]) {
+				if (id == users["rehabs"][u]["id"]) {
 					subID = users["rehabs"][u]["doctorId"];
 					break;
 				}
-		else {
+		} else {
 			addr = "/doctor/patient/delete";
 			for (u in users["patients"])
-				if (id = users["patients"][u]["id"]) {
+				if (id == users["patients"][u]["id"]) {
 					subID = users["patients"][u]["patientId"];
 					break;
 				}
 		}
 		// remove doctor or patient
+		console.log(addr + " - delete patient/doctor " + subID);
 		request(host + addr,
-			subID,
+			parseInt(subID),
 			function() {
 				// remove user
 				adminUserDelete(id);
 			},
 			function() {},
-			true,
 			true
 		);
 	}
 }
 
 
+/*
+APPOINTMENTS
+*/
+var appointments;
+
 function refreshAppointmentsTable() {
 	// get all appointments, refresh table
+	console.log("odświeżam... tabelkę");
+	var addr = (getCookie("role") == 2 ? "/admin/get/appointments" : "/doctor/get/appointments");
+	request(host + addr,
+		0,
+		function(response) {
+			console.log("got appointments");
+			appointments = response;
+			var table = document.getElementById('table');
+			table.innerHTML = '<th scope="col">ID</th><th scope="col">Data</th><th scope="col">Czas rozpoczęcia</th><th scope="col">Czas zakończenia</th><th scope="col">Rehabilitant</th><th scope="col">Pacjent</th><th scope="col">Edycja</th><tbody></tbody>';
+			for (var a in appointments) {
+				var row = table.insertRow(table.rows.length);
+				var date = new Date(appointments[a]["start"]);
+				var day = date.toLocaleDateString();
+				var start = date.toLocaleTimeString();
+				date = new Date(appointments[a]["end"]);
+				var stop = date.toLocaleTimeString();
+				row.insertCell(0).innerHTML = appointments[a]["id"];
+				row.insertCell(1).innerHTML = day;
+				row.insertCell(2).innerHTML = start;
+				row.insertCell(3).innerHTML = stop;
+				row.insertCell(4).innerHTML = appointments[a]["rehab"]["name"] + " " + appointments[a]["rehab"]["surname"];
+				row.insertCell(5).innerHTML = appointments[a]["patient"]["name"] + " " + appointments[a]["patient"]["surname"];
+				row.insertCell(6).innerHTML = '<button type="button" class="btn btn-sm btn-outline-primary" onclick="openVideoEditWindow(this)">Edytuj</button>';
+			}
+		},
+		function() {},
+		true
+	);
 }
 
 if (isCurrent("schedule.html"))
@@ -302,13 +362,19 @@ if (isCurrent("schedule.html"))
 
 function openVideoEditWindow(button) {
 	if (button) {
-		// existing user
+		// existing appointment
 		var row = button.parentNode.parentNode;
 		var id = row.cells[0].innerHTML;
 		var date = row.cells[1].innerHTML;
 		var start = row.cells[2].innerHTML;
 		var stop = row.cells[3].innerHTML;
-		//rehab
+		for (a in appointments) {
+			if (appointments[a]["id"] == id) {
+				$('#videocall-rehab').val(appointments[a]["rehab"]["doctorId"]);
+				$('#videocall-patient').val(appointments[a]["patient"]["patientId"]);
+			}
+		}
+		var rehabId = appointments["id" == 1]
 		$('#videocall-id').val(id);
 		$('#videocall-date').val(date);
 		$('#videocall-start').val(start);
@@ -319,6 +385,8 @@ function openVideoEditWindow(button) {
 		$('#videocall-date').val("");
 		$('#videocall-start').val("");
 		$('#videocall-stop').val("");
+		$('#videocall-rehab').val("");
+		$('#videocall-patient').val("");
 	}
 	$('#edit-videocall').show();
 }
@@ -329,34 +397,51 @@ function closeVideoEditWindow(save) {
 		var date = $('#videocall-date').val();
 		var start = $('#videocall-start').val();
 		var stop = $('#videocall-stop').val();
-		//rehab
-		var existing_visit = false;
-
-		var table = document.getElementById('table');
-		for (var r = 0, n = table.rows.length; r < n; r++) {
-			var cells = table.rows[r].cells;
-			if (cells[0].innerHTML == id) {
-				existing_visit = true;
-				cells[1].innerHTML = date;
-				cells[2].innerHTML = start;
-				cells[3].innerHTML = stop;
-			}
+		var rehab = $('#videocall-rehab').val();
+		var patient = $('#videocall-patient').val();
+		var addr;
+		var data;
+		if (id) {
+			// existing appointment
+			addr = "/doctor/appointment/edit";
+			data = {
+				"appointmentId": parseInt(id),
+				"doctorId": parseInt(rehab),
+				"end": date + " " + stop,
+				"patientId": parseInt(patient),
+				"start": date + " " + start
+			};
+		} else {
+			// new appointment
+			addr = "/doctor/appointment/add";
+			data = {
+				"doctorId": parseInt(rehab),
+				"end": date + " " + stop,
+				"patientId": parseInt(patient),
+				"start": date + " " + start
+			};
 		}
-		if (!existing_visit) {
-			var row = table.insertRow(table.rows.length);
-			row.appendChild(document.createElement("th")).innerHTML = "newID";
-			row.insertCell(1).innerHTML = date;
-			row.insertCell(2).innerHTML = start;
-			row.insertCell(3).innerHTML = stop;
-			row.insertCell(4).innerHTML = "////rehab...";
-			row.insertCell(5).innerHTML = '<button type="button" class="btn btn-sm btn-outline-primary" onclick="openVideoEditWindow(this)">Edytuj</button>';
-		}
+		request(host + addr,
+			data,
+			function(response) {
+				refreshAppointmentsTable();
+			},
+			function() {},
+			true
+		);
 	}
 	$('#edit-videocall').hide();
 }
 
 function removeVideocall () {
 	var id = $('#videocall-id').val();
-	// ...
-	refreshAppointmentsTable();
+	request(host + "/doctor/appointment/delete",
+		parseInt(id),
+		function(response) {
+			refreshAppointmentsTable();
+		},
+		function() {},
+		true
+	);
+	console.log("usuwam wydarzenie");
 }

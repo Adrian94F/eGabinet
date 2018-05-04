@@ -46,7 +46,7 @@ var host = "https://e-gabinet.org.pl:8181";
 if (location.protocol != 'https:')
 	host = "http://e-gabinet.org.pl:8080";
 
-function request(url, data, success, error, auth, plain) {
+function request(url, data, success, error, auth) {
 	var acc = "";
 	var ref = "";
 	acc = getCookie("accessToken")
@@ -56,8 +56,7 @@ function request(url, data, success, error, auth, plain) {
 		headers = {"Authorization": acc + ":" + ref};
 		console.log('with header Authorization: ' + acc + ':' + ref);
 	}
-	if (!plain)
-		data = JSON.stringify(data);
+	data = JSON.stringify(data);
 	$.ajax({
 		url: url,
 		type: "POST",
