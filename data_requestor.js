@@ -207,7 +207,7 @@ function closeEditWindow(save) {
 				console.log(response);
 				if (id == 0 && role != 2) {
 					id = response["addedUserId"];
-					if (id == 0) {
+					if (id != 0) {
 						if (role == 0)
 							addr = "/doctor/patient/add";
 						else if (role == 1)
