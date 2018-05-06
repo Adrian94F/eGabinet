@@ -1,7 +1,7 @@
-/*
-Get data about user
+/* ****************************************************************
+some useful functions...
 */
-function getMe() {
+function getMe(func) {
 	var name = "";
 	var surname = "";
 	name = getCookie("name");
@@ -46,7 +46,8 @@ function isCurrent(filename) {
 var me = 0;
 
 
-/*
+
+/* ****************************************************************
 LOGIN
 */
 if (!isCurrent("login.html")) { // always instead of login page
@@ -62,23 +63,48 @@ if (!isCurrent("login.html")) { // always instead of login page
 			function() {},
 			true
 		);
-	}, 60000);
+	}, 500000);
 }
 
 
-/*
+
+/* ****************************************************************
 INDEX
 */
-if (isCurrent("index.html") && getCookie("role") == 0) { // if patient on main menu
+function hide() {
 	$("#users-menu").remove();
 	$("#scheduler-button").remove();
 	$("#scheduler-text").html("Najbliższa wideorozmowa:</p><p>...");
-	//request
-	//update
+
+	console.log("PO STRONIE SERWERA CHYBA NIE BANGLA...");
+	
+	request(host + "/user/get/nextappointment",
+		0,
+		function (response) {
+			var time = new Date(response["start"]);
+			$("#scheduler-text").html("Najbliższa wideorozmowa:</p><p>" + time.toLocaleDateString() + " " + time.toLocaleTimeString());
+		},
+		function() {},
+		true
+	);
+}
+
+if (isCurrent("index.html")) { 
+	request(host + "/user/get/me",
+		0,
+		function(response) {
+			if (Math.max.apply(null, response["roles"]) == 0)
+				hide();			
+		},
+		function() {},
+		true
+	);
+	
 }
 
 
-/*
+
+/* ****************************************************************
 PROFILE
 */
 if (isCurrent("profile.html")) { // profile view
@@ -124,7 +150,7 @@ function refreshUsersTable() {
 					row.insertCell(3).innerHTML = users[labels[l]][u]["email"];
 					var role = Math.max.apply(null, users[labels[l]][u]["roles"]);
 					row.insertCell(4).innerHTML = user_roles[role];
-					row.insertCell(5).innerHTML = '<button type="button" class="btn btn-sm btn-outline-primary" onclick="openEditWindow(this)">Edytuj</button>';
+					row.insertCell(5).innerHTML = '<button type="button" class="btn btn-sm btn-outline-primary" onclick="openUserEditWindow(this)">Edytuj</button>';
 				}
 			}
 		},
@@ -153,7 +179,7 @@ if (isCurrent("users.html")) {
 	}
 }
 
-function openEditWindow(button) {
+function openUserEditWindow(button) {
 	if (button) { // existing user
 		var row = button.parentNode.parentNode;
 		var id = row.cells[0].innerHTML;
@@ -166,6 +192,7 @@ function openEditWindow(button) {
 		$('#user-second-name').val(second_name);
 		$('#user-email').val(email);
 		$('#user-role').val(user_roles.indexOf(role)).change();
+		$('#user-role').prop('disabled', true);
 	}
 	else { // new user
 		$('#user-id').val("");
@@ -173,14 +200,14 @@ function openEditWindow(button) {
 		$('#user-second-name').val("");
 		$('#user-email').val("");
 		$('#user-role').val(0).change();
+		$('#user-role').prop('disabled', false);
 	}
 	$('#user-pass').val("");
 	$('#user-pass-2').val("");
 	$('#edit-user').show();
 }
 
-function closeEditWindow(save) {
-	// TODO: zmiana roli!!!
+function closeUserEditWindow(save) {
 	if (save) {
 		var id = $('#user-id').val();
 		var name = $('#user-first-name').val();
@@ -194,6 +221,7 @@ function closeEditWindow(save) {
 			addr = "/admin/user/edit"; //existing user
 		}
 
+		// add new user...
 		request(host + addr,
 			{
 				"email": email,
@@ -204,7 +232,8 @@ function closeEditWindow(save) {
 				"admin": (role == 2 ? true : false)
 			},
 			function(response) {
-				console.log(response);
+				// ...and set it's role
+				// console.log(response);
 				if (id == 0 && role != 2) {
 					id = response["addedUserId"];
 					if (id != 0) {
@@ -232,12 +261,7 @@ function closeEditWindow(save) {
 			function() {},
 			true
 		);
-
-		if (id == 0) {
-			
-		}
 	}
-
 	$('#edit-user').hide();
 }
 
@@ -255,19 +279,17 @@ function adminUserDelete(id) {
 }
 
 function removeUser () {
-	console.log("USUWANIE CZŁOWIEKA NIE BANGLA!!!");
-	//return;
 	var id = $('#user-id').val();
 	var role = $('#user-role').val();
 	var addr;
 	var subID;
-	if (role == 2) {
+	if (role == 2) { // if admin: just remove user
 		for (u in users["admins"])
 			if (id == users["admins"][u]["id"]) {
 				adminUserDelete(id);
 				return;
 			}
-	} else {
+	} else { // if patient or doctor: first remove role, then user
 		if (role == 1) {
 			addr = "/admin/doctor/delete"
 			for (u in users["rehabs"])
@@ -283,8 +305,8 @@ function removeUser () {
 					break;
 				}
 		}
-		// remove doctor or patient
-		console.log(addr + " - delete patient/doctor " + subID);
+		// remove user
+		// console.log(addr + " - delete patient/doctor " + subID);
 		request(host + addr,
 			parseInt(subID),
 			function() {
@@ -298,7 +320,8 @@ function removeUser () {
 }
 
 
-/*
+
+/* ****************************************************************
 APPOINTMENTS
 */
 var appointments;
