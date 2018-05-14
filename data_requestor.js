@@ -344,13 +344,18 @@ function refreshAppointmentsTable() {
 				var start = date.toLocaleTimeString();
 				date = new Date(appointments[a]["end"]);
 				var stop = date.toLocaleTimeString();
-				row.insertCell(0).innerHTML = appointments[a]["id"];
-				row.insertCell(1).innerHTML = day;
-				row.insertCell(2).innerHTML = start;
-				row.insertCell(3).innerHTML = stop;
-				row.insertCell(4).innerHTML = appointments[a]["rehab"]["name"] + " " + appointments[a]["rehab"]["surname"];
-				row.insertCell(5).innerHTML = appointments[a]["patient"]["name"] + " " + appointments[a]["patient"]["surname"];
-				row.insertCell(6).innerHTML = '<button type="button" class="btn btn-sm btn-outline-primary" onclick="openVideoEditWindow(this)">Edytuj</button>';
+				if (date > Date.now()) {
+					row.insertCell(0).innerHTML = appointments[a]["id"];
+					row.insertCell(1).innerHTML = day;
+					row.insertCell(2).innerHTML = start;
+					row.insertCell(3).innerHTML = stop;
+					row.insertCell(4).innerHTML = appointments[a]["rehab"]["name"] + " " + appointments[a]["rehab"]["surname"];
+					row.insertCell(5).innerHTML = appointments[a]["patient"]["name"] + " " + appointments[a]["patient"]["surname"];
+					row.insertCell(6).innerHTML = '<button type="button" class="btn btn-sm btn-outline-primary" onclick="openVideoEditWindow(this)">Edytuj</button>';
+				} else {
+					// usuwanie minionych wideorozmów
+					removeVideocall(appointments[a]["id"]);
+				}
 			}
 		},
 		function() {},
@@ -462,8 +467,9 @@ function closeVideoEditWindow(save) {
 	$('#edit-videocall').hide();
 }
 
-function removeVideocall () {
-	var id = $('#videocall-id').val();
+function removeVideocall(videocallid) {
+
+	var id = (videocallid == 0 ? $('#videocall-id').val() : videocallid);
 	request(host + "/doctor/appointment/delete",
 		parseInt(id),
 		function(response) {
