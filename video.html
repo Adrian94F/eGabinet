@@ -10,7 +10,7 @@
 		<title>eGabinet – wideorozmowa</title>
 		<link rel='shortcut icon' type='image/x-icon' href='/favicon.ico' />
 	</head>
-	<body> <!-- onload="showMyFace()"> -->
+	<body style="overflow-y: hidden;">
 
 		<script src="door_opener.js"></script>
 
@@ -45,32 +45,18 @@
 
 		<div class="container-fluid"> <!-- style="margin-top: 15px;"> -->
 			<div class="row">
-				<iframe id="ifr" name="ifr" src="" allow="geolocation; microphone; camera" style="border: 0px; width: 100vw; height: calc(100vh + 4px); margin-top: -80px;"></iframe>
+				<iframe id="ifr" name="ifr" src="" allow="geolocation; microphone; camera" style="border: 0px; width: 100vw; height: calc(100vh + 62px); margin-top: -80px;"></iframe>
+				<div class="col">
+					<h2>Brak zaplanowanych wizyt.</h2>
+					<div id="loader">
+						<img src="spin.png" style="width: 80px; height: 80px; margin-top: 4px; margin-left: 4px;">
+					</div>
+				</div>
 			</div>
-			
-			<!-- <div class="row">
-				<div class="col-sm-9" style="padding-right: 0px;">
-					<div class="card">
-						<div class="card-body">
-							<button id="connect-btn" class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="showFriendsFace()">Połącz</button>
-							<video id="friendsVideo" autoplay></video>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-3">
-					<div class="card">
-						<div class="card-body">
-							<video id="yourVideo" autoplay muted></video>
-						</div>
-					</div>
-				</div>
-			</div> -->
 		</div>
 
 		<script src="main.js"></script>
-		
 		<script src="data_requestor.js"></script>
-
 		<script src="shitpatch.js"></script>
 
 	</body>

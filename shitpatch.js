@@ -1,8 +1,3 @@
-function setRoom(rName) {
-	var url = 'https://appear.in/' + rName;
-	$('#ifr').attr('src', url);
-}
-
 function getRoomName() {
 	request(host + "/user/get/nextappointment",
 		0,
@@ -10,16 +5,14 @@ function getRoomName() {
 			console.log("got appointment");
 			start = response["start"];
 			rehab = response["rehab"]["id"];
-			name = 'egabinet-rehab-room-' + rehab + start;
-			setRoom(name);
+			var url = 'https://appear.in/egabinet-rehab-room-' + rehab + start;
+			$('#ifr').attr('src', url);
 		},
 		function() {
-			name = 'egabinet-demo-room';
-			setRoom(name);
+			$('#ifr').remove();
 		},
 		true
 	);
-	return name;
 }
 
 $(document).ready(function(){
