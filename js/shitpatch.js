@@ -10,11 +10,17 @@ function getRoomName() {
 		},
 		function() {
 			$('#ifr').remove();
+			$('#splash').hide();
 		},
 		true
 	);
 }
 
 $(document).ready(function(){
+	$('#splash').show();
 	getRoomName();
+	setTimeout(function() {
+		$('#splash').hide();
+	}, 10000);
+
 });

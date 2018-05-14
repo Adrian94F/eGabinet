@@ -71,22 +71,22 @@ if (!isCurrent("login.html")) { // always instead of login page
 /* ****************************************************************
 INDEX
 */
-function hide() {
-	$("#users-menu").remove();
-	$("#scheduler-button").remove();
-	$("#scheduler-text").html("Najbliższa wideorozmowa:</p><p>...");
-
-	console.log("PO STRONIE SERWERA CHYBA NIE BANGLA...");
-	
+function checkNextAppointment() {
 	request(host + "/user/get/nextappointment",
 		0,
 		function (response) {
 			var time = new Date(response["start"]);
-			$("#scheduler-text").html("Najbliższa wideorozmowa:</p><p>" + time.toLocaleDateString() + " " + time.toLocaleTimeString());
+			$("#scheduler-text").html("Najbliższa wideorozmowa:<br/><b>" + time.toLocaleDateString() + " " + time.toLocaleTimeString() + "</b>");
 		},
 		function() {},
 		true
 	);
+}
+
+function hide() {
+	$("#users-menu").remove();
+	$("#scheduler-button").remove();
+	$("#scheduler-text").html("Brak planowanych wideorozmów.");
 }
 
 if (isCurrent("index.html")) { 
@@ -94,7 +94,8 @@ if (isCurrent("index.html")) {
 		0,
 		function(response) {
 			if (Math.max.apply(null, response["roles"]) == 0)
-				hide();			
+				hide();
+			checkNextAppointment();
 		},
 		function() {},
 		true
