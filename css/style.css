@@ -1,7 +1,7 @@
 body {
 	height: 100vh;
 	background-color: #fff; 
-	background-image: url("bgicon.png");
+	background-image: url("../img/bgicon.png");
 	background-position: right bottom;
 	background-repeat: no-repeat;
 }
