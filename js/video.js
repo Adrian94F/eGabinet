@@ -12,7 +12,7 @@ var webrtc = new SimpleWebRTC({
 	// immediately ask for camera access
 	autoRequestMedia: true,
 	debug: false,
-	detectSpeakingEvents: true,
+	detectSpeakingEvents: false,
 	autoAdjustMic: true,
 	nick: getCookie("nick")
 });
