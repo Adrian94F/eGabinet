@@ -83,9 +83,9 @@ body {
 	100% { transform: rotate(360deg); }
 }
 
-
-
-/* DAVE */
+#remotes {
+	vertical-align: middle;
+}
 
 .ctrl {
 	cursor: pointer;
@@ -133,6 +133,7 @@ body {
 	width: 100%;
 	text-align: center;*/
 	color: #aaa;
+	margin-bottom: 10px;
 }
 #localScreenContainer {
 	display: none;

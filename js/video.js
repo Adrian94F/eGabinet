@@ -88,26 +88,18 @@ function adjustSizes() {
 	var videos = document.getElementsByClassName('videoContainer')
 	var nOfVideos = videos.length;
 	var cols = 1;
-	var rows = 1;
-	if (nOfVideos > 1) {
+	if (nOfVideos > 1)
 		cols = 2;
-		if (nOfVideos > 2) {
-			rows = 2;
-		}
-		if (nOfVideos > 4) {
-			cols = 3;
-			rows = 3;
-		}
-		if (nOfVideos > 9) {
-			cols = 4;
-			rows = 4;
-		}
-	}
-	console.log("rows: " + rows + ", cols: " + cols);
+	if (nOfVideos > 4)
+		cols = 3;
+	if (nOfVideos > 9)
+		cols = 4;
+	console.log("cols: " + cols);
 
+	// change width
 	var width = [83.333 / cols, (30 / cols) + 15];
 
-	// for every video div: set width and height based on number of divs
+	// for every video div: set width based on number of video sources
 	for (var v = 0; v < nOfVideos; v++) {
 		var vid = 0;
 		while (vid == 0)
@@ -115,6 +107,7 @@ function adjustSizes() {
 		vid = vid[0];
 		vid.style.width = "calc(" + width[0] + "vw - " + width[1] + "px)";
 		vid.style.marginRight = "15px";
+		vid.style.marginBottom = "5px";
 		console.log(vid);
 	}
 }
