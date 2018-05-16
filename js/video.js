@@ -88,16 +88,24 @@ function adjustSizes() {
 	var videos = document.getElementsByClassName('videoContainer')
 	var nOfVideos = videos.length;
 	var cols = 1;
+	var rows = 1;
 	if (nOfVideos > 1)
 		cols = 2;
+	if (nOfVideos > 2)
+		rows = 2;
 	if (nOfVideos > 4)
 		cols = 3;
+	if (nOfVideos > 6)
+		rows = 3;
 	if (nOfVideos > 9)
 		cols = 4;
-	console.log("cols: " + cols);
+	if (nOfVideos > 12)
+		rows = 4;
+	console.log("cols: " + cols + ", rows: " + rows);
 
 	// change width
 	var width = [83.333 / cols, (30 / cols) + 15];
+	var height = [100 / rows, (rows == 1 ? 135 : (120 / rows + 15))];
 
 	// for every video div: set width based on number of video sources
 	for (var v = 0; v < nOfVideos; v++) {
@@ -107,7 +115,8 @@ function adjustSizes() {
 		vid = vid[0];
 		vid.style.width = "calc(" + width[0] + "vw - " + width[1] + "px)";
 		vid.style.marginRight = "15px";
-		vid.style.marginBottom = "5px";
+		vid.style.marginBottom = "15px";
+		vid.style.maxHeight =  "calc(" + height[0] + "vh - " + height[1] + "px)";
 		console.log(vid);
 	}
 }
@@ -115,10 +124,10 @@ function adjustSizes() {
 // a peer video has been added
 webrtc.on('videoAdded', function (video, peer) {
 	console.log('video added', peer);
-	// I am a patient, I don't want to see others than rehab
-	if ((webrtc.config.nick != getCookie("rehab") && peer["nick"] != getCookie("rehab"))
-	// I cannot connect to myself
-	|| peer["nick"] == webrtc.config.nick) {
+	// I am a patient, I don't want to see others than rehab AND I cannot connect to myself
+	if (
+		(webrtc.config.nick != getCookie("rehab") && peer["nick"] != getCookie("rehab")) || peer["nick"] == webrtc.config.nick) {
+		console.log("(" + webrtc.config.nick + "!=" + getCookie('rehab') + " && " + peer['nick'] + "!=" + getCookie('rehab') + ") || " + peer['nick'] + "==" + webrtc.config.nick);
 		video.volume = 0;
 		return -1;
 	}
@@ -166,7 +175,7 @@ webrtc.on('videoAdded', function (video, peer) {
 		if (peer && peer.pc) {
 			var connstate = document.createElement('div');
 			connstate.className = 'connectionstate';
-			container.appendChild(connstate);
+			//container.appendChild(connstate);
 			peer.pc.on('iceConnectionStateChange', function (event) {
 				switch (peer.pc.iceConnectionState) {
 					case 'checking':

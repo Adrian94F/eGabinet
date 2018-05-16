@@ -69,33 +69,38 @@ if (!isCurrent("login.html")) { // always instead of login page
 
 
 /* ****************************************************************
-INDEX
+INDEX & VIDEO
 */
-function checkNextAppointment() {
+function hide() {
+	if (isCurrent("index.html")) {
+		$("#users-menu").remove();
+		$("#scheduler-button").remove();
+		$("#scheduler-text").html("Najbliższa wideorozmowa:</p><p>...");
+	}
+	
 	request(host + "/user/get/nextappointment",
 		0,
 		function (response) {
 			var time = new Date(response["start"]);
-			$("#scheduler-text").html("Najbliższa wideorozmowa:<br/><b>" + time.toLocaleDateString() + " " + time.toLocaleTimeString() + "</b>");
+			setCookie("rehab", response["rehab"]["id"]);
+			setCookie("nick", response["patient"]["id"]);
+			if (isCurrent("index.html")) {
+				$("#scheduler-text").html("Najbliższa wideorozmowa:</p><p>" + time.toLocaleDateString() + " " + time.toLocaleTimeString());
+			}
 		},
 		function() {},
 		true
 	);
 }
 
-function hide() {
-	$("#users-menu").remove();
-	$("#scheduler-button").remove();
-	$("#scheduler-text").html("Brak planowanych wideorozmów.");
-}
-
-if (isCurrent("index.html")) { 
+if (isCurrent("index.html") || isCurrent("video.html")) { 
 	request(host + "/user/get/me",
 		0,
 		function(response) {
+			setCookie("nick", response["id"], 9999);
+			setCookie("rehab", response["id"], 9999);
 			if (Math.max.apply(null, response["roles"]) == 0)
-				hide();
-			checkNextAppointment();
+				hide();			
 		},
 		function() {},
 		true

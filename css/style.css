@@ -85,6 +85,7 @@ body {
 
 #remotes {
 	vertical-align: middle;
+	align-content: center;
 }
 
 .ctrl {
@@ -114,11 +115,13 @@ body {
 	width: 200px;
 	height: 150px;
 }
+
 .videoContainer video {
 	position: absolute;
 	width: 100%;
 	height: 100%;
 }*/
+
 .volume {
 	position: absolute;
 	left: 15%;
@@ -127,6 +130,7 @@ body {
 	height: 5px;
 	display: none;
 }
+
 .connectionstate {
 	/*position: absolute;
 	top: 0px;
@@ -135,6 +139,7 @@ body {
 	color: #aaa;
 	margin-bottom: 10px;
 }
+
 #localScreenContainer {
 	display: none;
 }
