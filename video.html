@@ -1,27 +1,23 @@
 <meta charset="UTF-8">
 <html>
 	<head>
-		<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
-		<script src="js/jquery-3.2.1.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 		<link rel="stylesheet" href="css/style.css">
 		<title>eGabinet – wideorozmowa</title>
-		<link rel='shortcut icon' type='image/x-icon' href='img/favicon.ico' />
+		<link rel='shortcut icon' type='image/x-icon' href='../img/favicon.ico' />
+		<script src="js/jquery-3.2.1.min.js"></script>
 	</head>
-	<body style="overflow-y: hidden;">
-
+	<body style="background: #454d54">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 		<script src="js/door_opener.js"></script>
-
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 			<a class="navbar-brand" href="index.html">
-				<img src="img/favicon.png" width="50" height="50" alt="">
+				<img src="../img/favicon.png" width="50" height="50" alt="">
 			</a>
 			<a class="navbar-brand" href="index.html">
 				eGabinet
 			</a>
-
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
 				</ul>
@@ -37,33 +33,40 @@
 					</li>
 				</ul>
 			</div>
-
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
+			<span class="navbar-toggler-icon"></span>
 			</button>
 		</nav>
-
-		<div class="container-fluid"> <!-- style="margin-top: 15px;"> -->
-			<div class="row">
-				<iframe id="ifr" name="ifr" src="" allow="geolocation; microphone; camera" style="border: 0px; width: 100vw; height: calc(100vh + 62px); margin-top: -80px;"></iframe>
-				<div id="splash" class="blank-div">
-					<div class="loader" style="margin-top: calc(50vh - 120px);">
-						<img src="img/spin.png" style="width: 80px; height: 80px; margin-top: 4px; margin-left: 4px;">
+		<div class="container-fluid" style="margin-top: 15px;">
+			<div class="card-body" style="padding: 0px;">
+			<table id="next_visit" class="table" style="margin: 0px;"></table>
+		</div>
+		<div class="row">
+			<div class="col-sm-10" style="padding-right: 0px;">
+				<div class="card" style="border: 0px; background-color: #fff1; height: calc(100vh - 105px);">
+					<div class="card-body" style="padding-right: 0px;">
+						<div id="remotes"></div>
 					</div>
 				</div>
-				<div class="col">
-					<h2>Brak zaplanowanych wizyt.</h2>
-					<div class="loader">
-						<img src="img/spin.png" style="width: 80px; height: 80px; margin-top: 4px; margin-left: 4px;">
+			</div>
+			<div class="col-sm-2">
+				<div class="card" style="border: 0px; background-color: #fff1;">
+					<div class="card-body" style="padding: 0px;">
+						<video id="yourVideo" autoplay muted></video>
+					</div>
+					<div>
+					<div id="mic_ctrl" class="ctrl" onclick="toggl_mute()"></div>
+						<div id="video_ctrl" class="ctrl" onclick="toggl_video()"></div>
 					</div>
 				</div>
 			</div>
 		</div>
-
-		<script src="js/main.js"></script>
-		<script src="js/data_requestor.js"></script>
-		<script src="js/shitpatch.js"></script>
-
-	</body>
+	</div>
+	<!-- <script src="main.js"></script> -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+	<script src="https://webrtc.github.io/adapter/adapter-4.2.2.js"></script>
+	<script src="js/latest-v3.js"></script>
+	<script src="js/data_requestor.js"></script>
+	<script src="js/video.js"></script>
+</body>
 </html>
-

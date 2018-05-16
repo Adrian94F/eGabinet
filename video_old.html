@@ -1,0 +1,69 @@
+<meta charset="UTF-8">
+<html>
+	<head>
+		<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/style.css">
+		<title>eGabinet – wideorozmowa</title>
+		<link rel='shortcut icon' type='image/x-icon' href='img/favicon.ico' />
+	</head>
+	<body style="overflow-y: hidden;">
+
+		<script src="js/door_opener.js"></script>
+
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="index.html">
+				<img src="img/favicon.png" width="50" height="50" alt="">
+			</a>
+			<a class="navbar-brand" href="index.html">
+				eGabinet
+			</a>
+
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav mr-auto">
+				</ul>
+				<ul class="navbar-nav">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Witaj, <span id="1st-2nd-name"></span>
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							<a class="dropdown-item" href="profile.html">Profil użytkownika</a>
+							<a class="dropdown-item" onclick="logout()" href="#">Wyloguj</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		</nav>
+
+		<div class="container-fluid"> <!-- style="margin-top: 15px;"> -->
+			<div class="row">
+				<iframe id="ifr" name="ifr" src="" allow="geolocation; microphone; camera" style="border: 0px; width: 100vw; height: calc(100vh + 62px); margin-top: -80px;"></iframe>
+				<div id="splash" class="blank-div">
+					<div class="loader" style="margin-top: calc(50vh - 120px);">
+						<img src="img/spin.png" style="width: 80px; height: 80px; margin-top: 4px; margin-left: 4px;">
+					</div>
+				</div>
+				<div class="col">
+					<h2>Brak zaplanowanych wizyt.</h2>
+					<div class="loader">
+						<img src="img/spin.png" style="width: 80px; height: 80px; margin-top: 4px; margin-left: 4px;">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="js/main.js"></script>
+		<script src="js/data_requestor.js"></script>
+		<script src="js/shitpatch.js"></script>
+
+	</body>
+</html>
+
