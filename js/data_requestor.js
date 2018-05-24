@@ -75,6 +75,7 @@ function hide() {
 	if (isCurrent("index.html") || isCurrent("")) {
 		$("#users-menu").remove();
 		$("#scheduler-button").remove();
+		$("#log").remove();
 		$("#scheduler-text").html("Najbliższa wideorozmowa:</p><p>...");
 	}
 	
