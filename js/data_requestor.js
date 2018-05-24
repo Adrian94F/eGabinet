@@ -72,7 +72,7 @@ if (!isCurrent("login.html")) { // always instead of login page
 INDEX & VIDEO
 */
 function hide() {
-	if (isCurrent("index.html")) {
+	if (isCurrent("index.html") || isCurrent("")) {
 		$("#users-menu").remove();
 		$("#scheduler-button").remove();
 		$("#scheduler-text").html("Najbliższa wideorozmowa:</p><p>...");
@@ -84,7 +84,7 @@ function hide() {
 			var time = new Date(response["start"]);
 			setCookie("rehab", response["rehab"]["id"]);
 			setCookie("nick", response["patient"]["id"]);
-			if (isCurrent("index.html")) {
+			if (isCurrent("index.html") || isCurrent("")) {
 				$("#scheduler-text").html("Najbliższa wideorozmowa:</p><p>" + time.toLocaleDateString() + " " + time.toLocaleTimeString());
 			}
 		},
@@ -93,7 +93,7 @@ function hide() {
 	);
 }
 
-if (isCurrent("index.html") || isCurrent("video.html")) { 
+if (isCurrent("index.html") || isCurrent("") || isCurrent("video.html")) { 
 	request(host + "/user/get/me",
 		0,
 		function(response) {
@@ -108,6 +108,67 @@ if (isCurrent("index.html") || isCurrent("video.html")) {
 	
 }
 
+
+/* ****************************************************************
+TELEMETRY
+*/
+if (isCurrent("telemetry.html")) {
+	if (getCookie("role") == 0) {
+		document.location.href = "index.html";
+	}
+	else {
+		var cardp0 = '<div class="card"><div class="card-header"><b>';
+		var cardp1 = '</b></div><div class="card-body">';
+		var cardp2 = '</div></div>';
+
+		setInterval(function() { 
+			request(host + "/admin/getSugar",
+				0,
+				function (response) {
+					
+					var patients = [];
+					var patientsMeasurements = [];
+
+					document.getElementById('patients').innerHTML = '';
+					for (i in response) {
+						var name = response[i]["PatientId"];
+						if (patients.indexOf(name) == -1) {
+							patients.push(name);
+							patientsMeasurements.push([]);
+						}
+						var measurements = response[i]["Measurements"]
+						for (m in measurements) {
+							patientsMeasurements[patients.indexOf(name)].push(measurements[m]);
+						}
+					}
+
+					for (p in patients) {
+						if (patients[p] == undefined) {
+							continue;
+						}
+						var patientCard = cardp0 + patients[p] + cardp1;
+						for (m in patientsMeasurements[p]) {
+							var mm = patientsMeasurements[p][m];
+
+							var date = new Date(response[i]["SendDate"] * 1000);
+							var time = date.toLocaleTimeString();
+							var key = mm["key"];
+							var value = mm["value"];
+							var unit =mm["unit"];
+							if (key && value && unit) {
+								patientCard += time + ' – ' + key + ': ' + value + ' ' + unit + '<br/>';
+							}
+						}
+						patientCard += cardp2;
+						document.getElementById('patients').innerHTML += patientCard;
+					}
+				},
+				function() {},
+				true
+			);
+		}, 1000);
+	}
+}
 
 
 /* ****************************************************************

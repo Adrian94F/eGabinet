@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/style.css">
+		<title>eGabinet – menu główne</title>
+		<link rel='shortcut icon' type='image/x-icon' href='img/favicon.ico' />
+		<style>
+			body {
+				height: 100vh;
+			}
+
+			.wrapper {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				grid-gap: 15px;
+				grid-auto-rows: minmax(10px, auto);
+				margin-right: 0px;
+				margin-left: 0px;
+			}
+
+			.card-body {
+				font-family: monospace;
+				font-size: 0.9rem;
+			}
+
+			
+		</style>
+	</head>
+	<body>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+		<script src="js/door_opener.js"></script>
+
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="index.html">
+				<img src="img/favicon.png" width="50" height="50" alt="">
+			</a>
+			<a class="navbar-brand" href="index.html">
+				eGabinet
+			</a>
+
+			<span id="1st-2nd-name" style="visibility: hidden;"></span>
+		</nav>
+
+		<div class="container-fluid" style="margin-top: 15px;">
+			<div class="row wrapper" id="patients"></div>
+		</div>
+		<script src="js/data_requestor.js"></script>
+	</body>
+</html>

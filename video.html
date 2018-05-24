@@ -38,35 +38,34 @@
 			</button>
 		</nav>
 		<div class="container-fluid" style="margin-top: 15px;">
-<!-- 			<div class="card-body" style="padding: 0px;">
-				<table id="next_visit" class="table" style="margin: 0px;"></table>
-			</div> -->
-		<div class="row">
-			<div class="col-sm-10" style="padding-right: 0px;">
-				<div class="card" style="border: 0px; background-color: #fff1; height: calc(100vh - 105px);">
-					<div class="card-body" style="padding-right: 0px; padding-bottom: 0px;">
-						<div id="remotes"></div>
+			<div class="row">
+				<div class="col-sm-10" style="padding-right: 0px;">
+					<div class="card" style="border: 0px; background-color: #fff1; height: calc(100vh - 105px);">
+						<div class="card-body" style="padding-right: 0px; padding-bottom: 0px;">
+							<div id="remotes"></div>
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-sm-2">
-				<div class="card" style="border: 0px; background-color: #fff1;">
-					<div class="card-body" style="padding: 0px;">
-						<video id="yourVideo" autoplay muted></video>
+				<div class="col-sm-2">
+					<div class="card" style="border: 0px; background-color: #fff1;">
+						<div class="card-body" style="padding: 0px;">
+							<video id="yourVideo" autoplay muted></video>
+						</div>
+						<div>
+						<div id="mic_ctrl" class="ctrl" onclick="toggl_mute()"></div>
+							<div id="video_ctrl" class="ctrl" onclick="toggl_video()"></div>
+						</div>
 					</div>
-					<div>
-					<div id="mic_ctrl" class="ctrl" onclick="toggl_mute()"></div>
-						<div id="video_ctrl" class="ctrl" onclick="toggl_video()"></div>
-					</div>
+
+					<a class="btn btn-outline-secondary btn-lg" target="_blank" href="telemetry.html" role="button" style=" margin-top: 15px;">Logi</a>
 				</div>
 			</div>
 		</div>
-	</div>
-	<!-- <script src="main.js"></script> -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-	<script src="https://webrtc.github.io/adapter/adapter-4.2.2.js"></script>
-	<script src="js/latest-v3.js"></script>
-	<script src="js/data_requestor.js"></script>
-	<script src="js/video.js"></script>
-</body>
+		<!-- <script src="main.js"></script> -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+		<script src="https://webrtc.github.io/adapter/adapter-4.2.2.js"></script>
+		<script src="js/latest-v3.js"></script>
+		<script src="js/data_requestor.js"></script>
+		<script src="js/video.js"></script>
+	</body>
 </html>
