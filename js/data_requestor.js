@@ -113,61 +113,73 @@ if (isCurrent("index.html") || isCurrent("") || isCurrent("video.html")) {
 /* ****************************************************************
 TELEMETRY
 */
+var maxLength = 15;
+function drawMeLikeOneOfYourFrenchGirls() {
+	request(host + "/admin/getSugar",
+		0,
+		function (response) {
+			//console.log("Witaj, misiaczku, zaczynamy rysowanie, bakłażanie śmierdzący!");
+			var cardp00 = '<div class="card';
+			var cardp01 = '"><div class="card-header"><b>';
+			var cardp1 = '</b></div><div class="card-body">';
+			var cardp2 = '</div></div>';
+			
+			var patients = [];
+			var sos = [];
+			var patientsMeasurements = [];
+
+			document.getElementById('patients').innerHTML = '';
+			for (i in response) {
+				var name = response[i]["PatientId"];
+				if (patients.indexOf(name) == -1) {
+					patients.push(name);
+					sos.push(false);
+					patientsMeasurements.push([]);
+				}
+				var measurements = response[i]["Measurements"]
+				for (m in measurements) {
+					patientsMeasurements[patients.indexOf(name)].push({"m": measurements[m], "d": response[i]["SendDate"]});
+				}
+			}
+
+			for (p in patients) {
+				if (patients[p] == undefined) {
+					continue;
+				}
+				var patientCard = cardp1;
+				patientsMeasurements[p].reverse();
+				patientsMeasurements[p].length = Math.min(maxLength, patientsMeasurements[p].length);
+				for (var m in patientsMeasurements[p]) {
+					var mm = patientsMeasurements[p][m]["m"];
+					var date = new Date(patientsMeasurements[p][m]["d"]);
+					var time = date.toLocaleTimeString();
+					var key = mm["key"];
+					var value = mm["value"];
+					var unit = mm["unit"];
+					if (key && value && unit) {
+						patientCard += time + ' – ' + key + ': ' + value + ' ' + unit + '<br/>';
+					}
+					if (mm["sos"] == 1) {
+						sos[p] = true;
+					}
+				}
+				patientCard = cardp00 + (sos[p] == true ? ' text-white bg-danger' : '') + cardp01 + patients[p] + patientCard + cardp2;
+				document.getElementById('patients').innerHTML += patientCard;
+			}
+		},
+		function() {
+			document.getElementById('patients').innerHTML = '<div class="card text-white bg-danger"><div class="card-header"><b>Uwaga!</b></div><div class="card-body">Wystąpił problem z połączeniem</div></div>';
+		},
+		true
+	);
+}
 if (isCurrent("telemetry.html")) {
 	if (getCookie("role") == 0) {
 		document.location.href = "index.html";
 	}
 	else {
-		var cardp0 = '<div class="card"><div class="card-header"><b>';
-		var cardp1 = '</b></div><div class="card-body">';
-		var cardp2 = '</div></div>';
-
-		setInterval(function() { 
-			request(host + "/admin/getSugar",
-				0,
-				function (response) {
-					
-					var patients = [];
-					var patientsMeasurements = [];
-
-					document.getElementById('patients').innerHTML = '';
-					for (i in response) {
-						var name = response[i]["PatientId"];
-						if (patients.indexOf(name) == -1) {
-							patients.push(name);
-							patientsMeasurements.push([]);
-						}
-						var measurements = response[i]["Measurements"]
-						for (m in measurements) {
-							patientsMeasurements[patients.indexOf(name)].push(measurements[m]);
-						}
-					}
-
-					for (p in patients) {
-						if (patients[p] == undefined) {
-							continue;
-						}
-						var patientCard = cardp0 + patients[p] + cardp1;
-						for (m in patientsMeasurements[p]) {
-							var mm = patientsMeasurements[p][m];
-
-							var date = new Date(response[i]["SendDate"] * 1000);
-							var time = date.toLocaleTimeString();
-							var key = mm["key"];
-							var value = mm["value"];
-							var unit =mm["unit"];
-							if (key && value && unit) {
-								patientCard += time + ' – ' + key + ': ' + value + ' ' + unit + '<br/>';
-							}
-						}
-						patientCard += cardp2;
-						document.getElementById('patients').innerHTML += patientCard;
-					}
-				},
-				function() {},
-				true
-			);
-		}, 1000);
+		drawMeLikeOneOfYourFrenchGirls();
+		setInterval(drawMeLikeOneOfYourFrenchGirls, 1000);
 	}
 }
 
